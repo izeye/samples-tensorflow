@@ -1,3 +1,4 @@
 # Created by .gitignore support plugin (hsz.mobi)
 samples-tensorflow.iml
 samples/mnist/MNIST_data
+samples/mnist/MNIST_logs
