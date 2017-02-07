@@ -20,7 +20,8 @@ cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
 
 train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
 
-for i in range(1000):
+MAX_STEP = 1000
+for step in range(MAX_STEP):
     batch = mnist.train.next_batch(50)
     train_step.run(feed_dict={x: batch[0], y_: batch[1]})
 
@@ -28,7 +29,7 @@ correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
-print accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels})
+print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.1)
@@ -77,11 +78,14 @@ train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 sess.run(tf.initialize_all_variables())
-for i in range(20000):
+
+# MAX_STEP = 20000
+MAX_STEP = 1000
+for step in range(MAX_STEP):
     batch = mnist.train.next_batch(50)
-    if i % 100 == 0:
+    if step % 100 == 0:
         train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
-        print "step %d, training accuracy %g" % (i, train_accuracy)
+        print("step %d, training accuracy %g" % (step, train_accuracy))
     train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
-print "test accuracy %g" % accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
+print("test accuracy %g" % accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
