@@ -1,3 +1,5 @@
+# This sample came from https://github.com/eldor4do/Tensorflow-Examples/blob/master/retraining-example.py
+
 import numpy as np
 import tensorflow as tf
 
@@ -9,7 +11,12 @@ def create_graph():
     with tf.gfile.FastGFile(modelFullPath, 'rb') as f:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(f.read())
+
+        # To fix version incompatibility.
+        # See http://stackoverflow.com/questions/41258012/tensorflow-inception-v3-image-retrain-unable-to-test-on-new-jpg-image
+        # See also http://izeye.blogspot.kr/2017/02/invalid-argument-nodedef-mentions-attr.html
         del(graph_def.node[1].attr["dct_method"])
+
         tf.import_graph_def(graph_def, name='')
 
 def run_inference_on_image():
